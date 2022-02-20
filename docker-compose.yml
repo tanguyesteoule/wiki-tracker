@@ -1,0 +1,22 @@
+version: '3'
+services: 
+    product-service:
+        build: ./wiki-tracker/
+        volumes:
+            - ./wiki-tracker/:/usr/src/app/
+        ports: 
+            - 8082:8082
+        environment: 
+            PORT: 8082
+            FLASK_DEBUG: 1
+        # networks: 
+        #     - arpanet 
+    # db:
+    #     image: postgres
+    #     restart: always
+    #     environment:
+    #         POSTGRES_PASSWORD: alisson123
+    #     networks: 
+    #         - arpanet
+    # networks: 
+    #     - arpanet

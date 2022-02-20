@@ -1,3 +1,7 @@
+wiki-tracker/static/output/*.png
+wiki-tracker/json/*.json
+twitter-bot/config.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

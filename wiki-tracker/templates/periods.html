@@ -1,0 +1,62 @@
+
+<script src="{{ url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
+
+<script>
+    $(document).ready(function(){
+        $('#go').click(function() {
+            date_start = $('#date_start').val()
+            date_end = $('#date_end').val()
+            window.location.href = "/periods?start="+date_start+"&end="+date_end;
+        });
+        
+        $('#previous').click(function() {
+            date_start = $('#date_start').val()
+            date_start = new Date(date_start);
+            new_end = new Date(date_start.getTime() - 1*24*3600*1000)
+            new_start = new Date(date_start.getTime() - 8*24*3600*1000)
+            new_start = new_start.toISOString().substring(0, 10)
+            new_end = new_end.toISOString().substring(0, 10)
+
+            window.location.href = "/periods?start="+new_start+"&end="+new_end;
+        });
+
+        $('#next').click(function() {
+            date_start = $('#date_start').val()
+            date_start = new Date(date_start);
+            new_end = new Date(date_start.getTime() + 15*24*3600*1000)
+            new_start = new Date(date_start.getTime() + 8*24*3600*1000)
+            new_start = new_start.toISOString().substring(0, 10)
+            new_end = new_end.toISOString().substring(0, 10)
+
+            window.location.href = "/periods?start="+new_start+"&end="+new_end;
+        });
+
+        // get url in date
+        let searchParams = new URLSearchParams(window.location.search);
+        url_start_date = searchParams.get('start');
+        url_end_date = searchParams.get('end');
+
+        $('#date_start').val(url_start_date)
+        $('#date_end').val(url_end_date)
+
+    });
+
+
+</script>
+
+<div style='text-align: center;'>
+    <input id='previous' type="button" value="Semaine précédente">
+    &nbsp;&nbsp;&nbsp;
+    <input type="date" id="date_start" min="2016-01-01" max="2022-02-19">
+    <input type="date" id="date_end" min="2016-01-01" max="2022-02-19">
+    &nbsp;&nbsp;&nbsp;
+    <input id='next' type="button" value="Semaine suivante"><br />
+    <input id='go' type="button" value="Envoyer">
+</div>
+<div id="chart" class="chart" style='width:100%; height:95%'></div>
+
+<script type="text/javascript">
+    var graphs = {{graphJSON | safe}};
+    Plotly.plot('chart', graphs, {});        
+</script>

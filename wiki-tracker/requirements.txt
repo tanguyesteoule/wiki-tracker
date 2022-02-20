@@ -1,0 +1,5 @@
+flask
+plotly
+wordcloud
+pandas
+gunicorn
