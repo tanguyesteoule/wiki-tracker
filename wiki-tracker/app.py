@@ -90,9 +90,12 @@ def agreg_date(list_date):
 def periods():
     start_date = request.args.get('start', type = str)
     end_date = request.args.get('end', type = str)
-    LIMIT_DATE = '2022-02-19'
-    DEFAULT_START = '2022-02-12'
-    DEFAULT_END = '2022-02-19'
+
+    yesterday = datetime.now() - timedelta(days=1, hours=7)
+    last_week = yesterday - timedelta(days=7)
+    LIMIT_DATE = yesterday.strftime("%Y-%m-%d")
+    DEFAULT_START = last_week.strftime("%Y-%m-%d")
+    DEFAULT_END = yesterday.strftime("%Y-%m-%d")
     if start_date is None or end_date is None or start_date > LIMIT_DATE or end_date > LIMIT_DATE or end_date < start_date:
         return redirect(url_for('.periods', start=DEFAULT_START, end=DEFAULT_END))
 
@@ -142,7 +145,10 @@ def periods():
     fig.update_layout(showlegend=False, title=f'Tendances Wikipédia FR du {start_date} au {end_date}')
 
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template('periods.html', graphJSON=graphJSON)
+
+    return render_template('periods.html', graphJSON=graphJSON, last_date=LIMIT_DATE)
+        
+
 
 
 if __name__ == '__main__':
