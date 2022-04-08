@@ -46,6 +46,9 @@ def get_wordcloud(year, month, day):
     list_articles = list_articles[:50]
 
     dict_articles = {e[0].replace('_', ' '):e[1] for e in list_articles}
+    dict_articles["Sondages élection présidentielle"] = dict_articles.pop(
+        "Liste de sondages sur l'élection présidentielle française de 2022")
+
     name_file = f'{year}-{month}-{day}'
     makeImage(dict_articles, name_file)
 
