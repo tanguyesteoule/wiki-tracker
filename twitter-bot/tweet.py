@@ -39,8 +39,9 @@ def make_image(year, month, day):
     list_articles = list_articles[:50]
 
     dict_articles = {e[0].replace('_', ' '):e[1] for e in list_articles}
-    dict_articles["Sondages élection présidentielle"] = dict_articles.pop(
-        "Liste de sondages sur l'élection présidentielle française de 2022")
+    long_name = "Liste de sondages sur l'élection présidentielle française de 2022"
+    if long_name in dict_articles:
+        dict_articles["Sondages élection présidentielle"] = dict_articles.pop(long_name)
 
     name_file = f'{year}-{month:02d}-{day:02d}'
     __make_workcloud(dict_articles, name_file)

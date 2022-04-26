@@ -25,7 +25,7 @@ def process_article(article):
         if e in name:
             return False
     return True
-    
+
 def makeImage(freq, name):
     wc = WordCloud(background_color="white", max_words=100, width=2000, height=1000)
     wc.generate_from_frequencies(freq)
@@ -46,8 +46,9 @@ def get_wordcloud(year, month, day):
     list_articles = list_articles[:50]
 
     dict_articles = {e[0].replace('_', ' '):e[1] for e in list_articles}
-    dict_articles["Sondages élection présidentielle"] = dict_articles.pop(
-        "Liste de sondages sur l'élection présidentielle française de 2022")
+    long_name = "Liste de sondages sur l'élection présidentielle française de 2022"
+    if long_name in dict_articles:
+        dict_articles["Sondages élection présidentielle"] = dict_articles.pop(long_name)
 
     name_file = f'{year}-{month}-{day}'
     makeImage(dict_articles, name_file)
@@ -66,7 +67,7 @@ def button():
 def agreg_date(list_date):
     if len(list_date) == 1:
         return [[list_date[0], list_date[0] + timedelta(days=1)]]
-    
+
     start = list_date[0]
     old_date = start
     list_period = []
@@ -78,7 +79,7 @@ def agreg_date(list_date):
             start = date
 
         old_date = date
-    
+
     # Last row
     if list_date[-1] == old_date + timedelta(days=1):
         list_period.append([start, list_date[-1] + timedelta(days=1)])
@@ -115,11 +116,11 @@ def periods():
         file_path = f'json/{year_month}.json'
         with open(file_path, 'r') as f:
             list_articles_month[year_month] = json.load(f)
-        
+
     dict_article = {}
 
     list_df = []
-        
+
     for date in list_dates:
         dt = datetime.strptime(date, '%Y-%m-%d')
         dt_next = dt + timedelta(days=1)
@@ -140,7 +141,7 @@ def periods():
         if nb_day_article[name] > 1:
             for period in periods:
                 list_df.append(dict(Page=name.replace('_', ' '), Start=period[0], Finish=period[1], Cluster="0"))
-        
+
     df = pd.DataFrame(list_df)
 
     fig = px.timeline(df, x_start="Start", x_end="Finish", y="Page", color="Cluster")
@@ -150,7 +151,7 @@ def periods():
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     return render_template('periods.html', graphJSON=graphJSON, last_date=LIMIT_DATE)
-        
+
 
 
 
