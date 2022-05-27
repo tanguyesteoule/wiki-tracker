@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import time
 from update_data import update_json
 from config import API_KEY, API_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
+import unidecode
 
 # FOLDER_WIKI = '/home/tanguy/workspace/jupyter/wiki'
 FOLDER_WIKI = '/home/tanguy/wiki-tracker/wiki-tracker'
@@ -29,6 +30,12 @@ def __make_workcloud(freq, name):
     file_path = os.path.join(FOLDER_WIKI, 'static', 'output', f'{name}.png')
     plt.savefig(file_path)
 
+def to_hashtag(s):
+    clean_s = s.replace('_', '').replace("'", '').replace('-', '')
+    clean_s = clean_s.split('(')[0]
+    clean_s = unidecode.unidecode(clean_s)
+    return f'#{clean_s}'
+
 def make_image(year, month, day):
     file_path = os.path.join(FOLDER_WIKI, 'json', f'{year}_{month:02d}.json')
     with open(file_path, 'r') as f:
@@ -45,10 +52,14 @@ def make_image(year, month, day):
 
     name_file = f'{year}-{month:02d}-{day:02d}'
     __make_workcloud(dict_articles, name_file)
+    
+    hashtag_str = ' '.join([to_hashtag(e[0]) for e in list_articles[:5]])[:280]
+    return hashtag_str
+
 
 def tweet(date):
     # Generate image
-    make_image(date.year, date.month, date.day)
+    hashtag_str = make_image(date.year, date.month, date.day)
     name_file = f'{date.year}-{date.month:02d}-{date.day:02d}'
 
     auth = tweepy.OAuthHandler(API_KEY, API_SECRET)

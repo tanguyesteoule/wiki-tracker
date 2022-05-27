@@ -4,3 +4,4 @@ wordcloud
 pandas
 gunicorn
 requests
+unidecode
