@@ -68,7 +68,8 @@ def tweet(date):
     
     file_path = os.path.join(FOLDER_WIKI, 'static', 'output', f'{name_file}.png')
     date_format = yesterday.strftime("%d/%m/%Y")
-    status = api.update_status_with_media(date_format, file_path)
+    text = f'{date_format} {hashtag_str}'
+    status = api.update_status_with_media(text, file_path)
 
 
 if __name__ == '__main__':
