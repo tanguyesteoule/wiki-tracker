@@ -14,7 +14,7 @@ FOLDER_WIKI = '/home/tanguy/wiki-tracker/wiki-tracker'
 
 def process_article(article):
     name = article[0]
-    list_filter = ['Wikipédia:', 'Wikip?dia:', 'Special:', 'Spécial:', 'Sp?cial:', 'Fichier:', 'Utilisateur:', 'Portail:', 'Aide:', 'Discussion:', 'Discussion_utilisateur:']
+    list_filter = ['Wikipédia:', 'Wikip?dia:', 'Special:', 'Spécial:', 'Sp?cial:', 'Fichier:', 'Utilisateur:', 'Portail:', 'Aide:', 'Discussion:', 'Discussion_utilisateur:', 'Sujet:']
     for e in list_filter:
         if e in name:
             return False
@@ -31,7 +31,7 @@ def __make_workcloud(freq, name):
     plt.savefig(file_path)
 
 def to_hashtag(s):
-    clean_s = s.replace('_', '').replace("'", '').replace('-', '')
+    clean_s = s.replace(' ', '').replace("'", '').replace('-', '')
     clean_s = clean_s.split('(')[0]
     clean_s = unidecode.unidecode(clean_s)
     return f'#{clean_s}'
@@ -46,14 +46,17 @@ def make_image(year, month, day):
     list_articles = list_articles[:50]
 
     dict_articles = {e[0].replace('_', ' '):e[1] for e in list_articles}
-    long_name = "Liste de sondages sur l'élection présidentielle française de 2022"
-    if long_name in dict_articles:
-        dict_articles["Sondages élection présidentielle"] = dict_articles.pop(long_name)
+    dict_long_name = {"Liste de sondages sur l'élection présidentielle française de 2022": "Sondages Election Présidentielle",
+                      "Liste de sondages sur les élections législatives françaises de 2022": "Sondages Elections Législatives"
+                     }
+    for long_name, short_name in dict_long_name.items():
+        if long_name in dict_articles:
+            dict_articles[short_name] = dict_articles.pop(long_name)
 
     name_file = f'{year}-{month:02d}-{day:02d}'
     __make_workcloud(dict_articles, name_file)
     
-    hashtag_str = ' '.join([to_hashtag(e[0]) for e in list_articles[:5]])[:280]
+    hashtag_str = ' '.join([to_hashtag(e) for e in list(dict_articles.keys())[:5]])[:280]
     return hashtag_str
 
 
