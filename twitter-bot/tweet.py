@@ -56,7 +56,7 @@ def make_image(year, month, day):
     name_file = f'{year}-{month:02d}-{day:02d}'
     __make_workcloud(dict_articles, name_file)
     
-    hashtag_str = ' '.join([to_hashtag(e[0]) for e in list(dict_articles.keys())[:5]])[:280]
+    hashtag_str = ' '.join([to_hashtag(e) for e in list(dict_articles.keys())[:5]])[:280]
     return hashtag_str
 
 
