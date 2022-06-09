@@ -52,6 +52,8 @@ def make_image(year, month, day):
     for long_name, short_name in dict_long_name.items():
         if long_name in dict_articles:
             dict_articles[short_name] = dict_articles.pop(long_name)
+    
+    dict_articles = {k: v for k, v in sorted(dict_articles.items(), key=lambda item: item[1], reverse=True)}
 
     name_file = f'{year}-{month:02d}-{day:02d}'
     __make_workcloud(dict_articles, name_file)
