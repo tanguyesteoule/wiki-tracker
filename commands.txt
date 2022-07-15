@@ -1,0 +1,13 @@
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+sudo apt-get install libfreetype6-dev
+pip uninstall pillow
+pip install --no-cache-dir pillow
+
+gunicorn --bind 0.0.0.0:5000 wsgi:app
+
+
+sudo nano /etc/systemd/system/wikimeter.service
+sudo systemctl restart wikimeter.service

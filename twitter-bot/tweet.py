@@ -14,7 +14,7 @@ FOLDER_WIKI = '/home/tanguy/wiki-tracker/wiki-tracker'
 
 def process_article(article):
     name = article[0]
-    list_filter = ['Wikipédia:', 'Wikip?dia:', 'Special:', 'Spécial:', 'Sp?cial:', 'Fichier:', 'Utilisateur:', 'Portail:', 'Aide:', 'Discussion:', 'Discussion_utilisateur:', 'Sujet:']
+    list_filter = ['Cookie_(informatique)', 'Wikipédia:', 'Wikip?dia:', 'Special:', 'Spécial:', 'Sp?cial:', 'Fichier:', 'Utilisateur:', 'Portail:', 'Aide:', 'Discussion:', 'Discussion_utilisateur:', 'Sujet:']
     for e in list_filter:
         if e in name:
             return False
@@ -31,7 +31,7 @@ def __make_workcloud(freq, name):
     plt.savefig(file_path)
 
 def to_hashtag(s):
-    clean_s = s.replace(' ', '').replace("'", '').replace('-', '')
+    clean_s = s.replace(' ', '').replace("'", '').replace('-', '').replace('.', '')
     clean_s = clean_s.split('(')[0]
     clean_s = unidecode.unidecode(clean_s)
     return f'#{clean_s}'
