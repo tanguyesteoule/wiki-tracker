@@ -14,7 +14,7 @@ FOLDER_WIKI = '/home/tanguy/wiki-tracker/wiki-tracker'
 
 def process_article(article):
     name = article[0]
-    list_filter = ['Cookie_(informatique)', 'Wikipédia:', 'Wikip?dia:', 'Special:', 'Spécial:', 'Sp?cial:', 'Fichier:', 'Utilisateur:', 'Portail:', 'Aide:', 'Discussion:', 'Discussion_utilisateur:', 'Sujet:']
+    list_filter = ['Google Traduction', 'Cookie_(informatique)', 'Wikipédia:', 'Wikip?dia:', 'Special:', 'Spécial:', 'Sp?cial:', 'Fichier:', 'Utilisateur:', 'Portail:', 'Aide:', 'Discussion:', 'Discussion_utilisateur:', 'Sujet:']
     for e in list_filter:
         if e in name:
             return False
